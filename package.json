@@ -7,9 +7,9 @@
   "version": "3.7.0",
   "type": "module",
   "description": "Unless you're eating one right now, you probably need a gyro",
-  "main": "app.js",
   "scripts": {
     "build": "node script/copy_js_to_public_js.js",
+    "dev": "npm run build && wrangler pages dev public",
     "prettier": "prettier --write .",
     "test": "npm run build && c8 mocha ./test/**/* --exit --reporter spec",
     "test_report": "npm run build && c8 mocha ./test/**/* --exit --reporter mochawesome",
@@ -31,7 +31,8 @@
     "chai": "latest",
     "mocha": "latest",
     "mochawesome": "latest",
-    "prettier": "latest"
+    "prettier": "latest",
+    "wrangler": "latest"
   },
   "overrides": {
     "serialize-javascript": "7.0.5",
