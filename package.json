@@ -1,0 +1,43 @@
+{
+  "name": "ineedagyro",
+  "engines": {
+    "node": "24.x",
+    "npm": ">=10.9.0"
+  },
+  "version": "3.7.0",
+  "type": "module",
+  "description": "Unless you're eating one right now, you probably need a gyro",
+  "main": "app.js",
+  "scripts": {
+    "build": "node script/copy_js_to_public_js.js",
+    "prettier": "prettier --write .",
+    "test": "npm run build && c8 mocha ./test/**/* --exit --reporter spec",
+    "test_report": "npm run build && c8 mocha ./test/**/* --exit --reporter mochawesome",
+    "test_coverage_html": "npm run build && c8 report --reporter=html --reporter=text mocha ./test/**/* --exit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:eebbesen/ineedagyro-js.git"
+  },
+  "keywords": [
+    "gyro",
+    "gyros"
+  ],
+  "author": "eebbesen",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "c8": "latest",
+    "chai": "latest",
+    "mocha": "latest",
+    "mochawesome": "latest",
+    "prettier": "latest"
+  },
+  "overrides": {
+    "serialize-javascript": "7.0.5",
+    "mocha": {
+      "diff": "8.0.3"
+    },
+    "uuid": "11.1.1"
+  }
+}
