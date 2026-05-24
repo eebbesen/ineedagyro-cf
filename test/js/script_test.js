@@ -3,31 +3,6 @@ process.env.NODE_ENV = 'test';
 import { expect } from 'chai';
 import * as script from '../../src/script.js';
 
-// need to refactor method under tests with proper scoping
-// describe('locationSuccess', () => {
-//   it('should get the callback', () => {
-//     const location = {
-//       coords: {
-//         latitude: 37.7749,
-//         longitude: -122.4194,
-//       },
-//     };
-
-//     global.window =
-//     {
-//       location: {
-//         href: 'http://localhost:8080/?lat=37.7749&lng=-122.4194&term=gyro',
-//         origin: 'https://ineedagyro.com',
-//       }
-//     };
-
-//     const result = script.locationSuccess(location);
-//     console.log('result', result);
-
-//     expect(result).to.be.a('function');
-//   });
-// });
-
 describe('formatGeoInfo', () => {
   it('should format the location info correctly when address1', () => {
     const expected = '<div class="address"><span class="lefty">1600 Grand Ave</span><span class="righty">0.62 miles</span></div>';
@@ -195,6 +170,18 @@ describe('formatResults', () => {
         <a class="button" href="https://fake.business.biz/2"><div class="outer">Russkaya Shaverma<div class="address"><span class="lefty">900 University Ave</span><span class="righty">0.06 miles</span></div></div></a>
       </div>`;
       expect(ret.replace(/\s/g, '')).to.equal(expected.replace(/\s/g, ''));
+    });
+
+    it('returns no results message when all locs are filtered out', () => {
+      const allClosed = {
+        locs: [
+          { url: 'https://fake.business.biz/1', name: 'Closed Gyros', location: { address1: '1 Main St' }, is_closed: true },
+          { url: 'https://fake.business.biz/2', name: 'No Address',   location: { address1: '' },          is_closed: false },
+        ],
+      };
+      expect(script.formatResults(allClosed)).to.equal(
+        '<div>No results found within 40 km of you -- συγνώμη!</div>',
+      );
     });
   });
 

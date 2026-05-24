@@ -1,4 +1,4 @@
-# ineedagyro-js
+# ineedagyro-cf
 
 Gyros near you!
 
@@ -8,93 +8,61 @@ For other foods, add a `term` parameter e.g., https://ineedagyro.com/?term=chees
 
 ## How?
 
-Uses browser's `navigation.geolocation.getCurrentPosition()` to query [Yelp's Fusion API](https://www.yelp.com/developers/documentation/v3/business_search) using [yelp-fusion](https://github.com/Yelp/yelp-fusion).
+Uses the browser's `navigator.geolocation.getCurrentPosition()` to get your location, then calls
+[Yelp's Fusion API](https://www.yelp.com/developers/documentation/v3/business_search) via a
+[Cloudflare Pages Function](https://developers.cloudflare.com/pages/functions/) that keeps the API
+key server-side.
 
-## Run
+## Run locally
 
-1. Get API ID and secret from [Yelp](https://www.yelp.com/developers/v3/manage_app)
-1. Set those values in your environment
-   See https://www.yelp.com/developers/v3/manage_app
+1. Get an API key from [Yelp](https://www.yelp.com/developers/v3/manage_app)
+1. Set it in your environment:
 
 ```bash
-export YELP_API_KEY=<your_yelp_API_ID>
+export YELP_API_KEY=your_key
 ```
 
-### Using npm directly
+3. Start the local dev server:
 
 ```bash
 npm install
-npm start
+npm run dev
 ```
 
-### Using Docker
-
-#### Build
-
-To ensure you're not using an out-of-date image
-
-```bash
-docker compose build
-```
-
-#### Run
-
-```bash
-docker compose up -d
-```
-
-Then browse to http://localhost:8080/.
-
-#### Other options
-
-If you want to view logs, omit `-d` from the previous command _or_
-
-```bash
-docker compose logs -f
-```
+Then browse to http://localhost:8788.
 
 ## Test
-
-Make sure karma-chrome-launcher is installed. This may cause problems with CI.
-
-```bash
-npm install karma-chrome-launcher --save-dev --link
-```
 
 ```bash
 npm test
 ```
 
-will run mocha for the server-side JavaScript and karma for the client-side tests.
-
-To generate tests with human-readable test result report run
+To generate a human-readable test result report:
 
 ```bash
 npm run test_report
 ```
 
-and open mochawesome-report/mochawesome.html.
+Then open `mochawesome-report/mochawesome.html`.
 
-To generate tests with human-readable test coverage result report run
+To generate a test coverage report:
 
 ```bash
 npm run test_coverage_html
 ```
 
-and open coverage/index.html.
+Then open `coverage/index.html`.
 
 ## Helpy things
 
 ### cURL
 
-#### Call Yelp endpoint directly with token
-
-Export the Yelp token you received (see above)
-`export YELP_API_KEY=<see_get_token_section>`
-then execute the request
+Call the Yelp endpoint directly:
 
 ```bash
-curl -H "Authorization: Bearer $YELP_API_KEY" https://api.yelp.com/v3/businesses/search?location=48226&term=gyro
+export YELP_API_KEY=<your_key>
+curl -H "Authorization: Bearer $YELP_API_KEY" \
+  "https://api.yelp.com/v3/businesses/search?latitude=44.938&longitude=-93.169&term=gyro&sort_by=distance"
 ```
 
 ### Chrome location permissions reset

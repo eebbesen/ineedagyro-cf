@@ -1,5 +1,11 @@
 export function formatResults(json) {
   if (json.locs && json.locs.length > 0) {
+    const visible = json.locs.filter(loc => !loc.is_closed && loc?.location?.address1?.length > 0);
+
+    if (visible.length === 0) {
+      return '<div>No results found within 40 km of you -- συγνώμη!</div>';
+    }
+
     const header = `
     <div class="results-header">
       <em>Results from Yelp!</em><hr/>
@@ -7,8 +13,7 @@ export function formatResults(json) {
 
     const recs = `
     <div class="container">
-      ${json.locs
-        .filter(loc => !loc.is_closed && loc?.location?.address1?.length > 0)
+      ${visible
         .map((loc) => `<a class="button" href="${loc.url}"><div class="outer">${loc.name} ${formatGeoInfo(loc)}</div></a>`)
         .join('')}
     </div>`;
@@ -66,8 +71,12 @@ export function populateResults() {
         location.coords.longitude,
         params.term,
       );
-      const json = await fetch(url).then((res) => res.json());
-      document.querySelector('#results').innerHTML = formatResults(json);
+      try {
+        const json = await fetch(url).then((res) => res.json());
+        document.querySelector('#results').innerHTML = formatResults(json);
+      } catch (err) {
+        document.querySelector('#results').innerHTML = locationError(err);
+      }
     },
     (err) => {
       document.querySelector('#results').innerHTML = locationError(err);

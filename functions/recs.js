@@ -21,6 +21,10 @@ export async function onRequestGet({ request, env }) {
       { headers: { Authorization: `Bearer ${env.YELP_API_KEY}` } },
     );
     const data = await response.json();
+    if (!response.ok) {
+      console.log('Yelp API error', response.status, data);
+      return Response.json({ error: 'Yelp API error', detail: data }, { status: response.status });
+    }
     return Response.json({ locs: data.businesses });
   } catch (err) {
     console.log(err);

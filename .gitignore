@@ -3,4 +3,5 @@ coverage
 mochawesome-report
 .claude
 .dev.vars
+.wrangler
 
