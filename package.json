@@ -13,7 +13,9 @@
     "prettier": "prettier --write .",
     "test": "npm run build && c8 mocha ./test/**/* --exit --reporter spec",
     "test_report": "npm run build && c8 mocha ./test/**/* --exit --reporter mochawesome",
-    "test_coverage_html": "npm run build && c8 report --reporter=html --reporter=text mocha ./test/**/* --exit"
+    "test_coverage_html": "npm run build && c8 report --reporter=html --reporter=text mocha ./test/**/* --exit",
+    "deploy": "wrangler deploy",
+    "preview": "wrangler dev"
   },
   "repository": {
     "type": "git",
@@ -25,14 +27,13 @@
   ],
   "author": "eebbesen",
   "license": "MIT",
-  "dependencies": {},
   "devDependencies": {
     "c8": "latest",
     "chai": "latest",
     "mocha": "latest",
     "mochawesome": "latest",
     "prettier": "latest",
-    "wrangler": "latest"
+    "wrangler": "^4.94.0"
   },
   "overrides": {
     "serialize-javascript": "7.0.5",
