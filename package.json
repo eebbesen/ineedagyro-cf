@@ -9,7 +9,7 @@
   "description": "Unless you're eating one right now, you probably need a gyro",
   "scripts": {
     "build": "node script/copy_js_to_public_js.js",
-    "dev": "npm run build && wrangler pages dev public",
+    "dev": "npm run build && printf 'YELP_API_KEY=%s\\n' \"$YELP_API_KEY\" > .dev.vars && wrangler pages dev public",
     "prettier": "prettier --write .",
     "test": "npm run build && c8 mocha ./test/**/* --exit --reporter spec",
     "test_report": "npm run build && c8 mocha ./test/**/* --exit --reporter mochawesome",
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:eebbesen/ineedagyro-js.git"
+    "url": "git@github.com:eebbesen/ineedagyro-cf.git"
   },
   "keywords": [
     "gyro",
